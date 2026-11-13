@@ -106,8 +106,8 @@ public final class RuntimeLab {
         check(entered.await(1,TimeUnit.SECONDS),"worker did not enter");
         boolean timedOut=false;double returned=-1,signal=-1;
         try{f.get(40,TimeUnit.MILLISECONDS);}catch(TimeoutException expected){timedOut=true;returned=t.emit("waiter_returned",0);}
-        if(!mode.equals("wait-only")){signal=t.emit("cancel_signal",0);cancelResult.set(f.cancel(true));t.emit("cancel_result",0,"accepted",cancelResult.get());}
         boolean exitedAtWaiterReturn=exited.getCount()==0;
+        if(!mode.equals("wait-only")){signal=t.emit("cancel_signal",0);cancelResult.set(f.cancel(true));t.emit("cancel_result",0,"accepted",cancelResult.get());}
         try{check(exited.await(2,TimeUnit.SECONDS),"work did not exit");}finally{close(p);}
         check(timedOut,"expected waiter timeout");check(!exitedAtWaiterReturn,"work already exited at timeout");
         check(exit[0]>=returned,"exit preceded timeout");

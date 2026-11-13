@@ -4,7 +4,9 @@ Date: 2026-11-13, Asia/Shanghai. Workloads are synthetic. The site displays save
 
 ## Runtime evidence
 
+- The public companion CI also ran the complete suite on a fresh Ubuntu runner, independently of the reference macOS captures.
 - Fixed Eclipse Temurin 25.0.5+8 LTS, Maven 3.9.11 via checksum-pinned Apache Maven Wrapper 3.3.4. Runtime has no third-party dependencies.
+- Executed the documented JDK setup entry: downloaded the pinned archive, verified official SHA-256 and extracted only under local/. Finite retry handles transient download/TLS errors.
 - Built the public companion and executed three complete suites in separate JVMs; repeated the suite after final runtime-source cleanup. All task lifecycle assertions, counter closures and worker-pool termination checks passed.
 - Each suite covers two bounded-pool rejection policies, three wait/cancel/interruption paths and three retry policies. Each actual JFR was independently read again in another JVM. Each JSON was checked by an independent Python verifier, including per-task terminal outcomes and equality of recorded transition count with JFR lab.TaskEvent count.
 - Final saved records: all three Abort runs completed 5 / rejected 13 of 18 tasks; CallerRuns completed 18 / rejected 0 with 5 caller executions. Queue capacity 3 was never exceeded.

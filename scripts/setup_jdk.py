@@ -9,7 +9,7 @@ local=root/'local';local.mkdir(exist_ok=True)
 name=f'OpenJDK25U-jdk_{arch}_{osname}_hotspot_25.0.5_8.tar.gz'
 base='https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.5%2B8/'
 for suffix in ['', '.sha256.txt']:
- subprocess.run(['curl','-fL','--retry','3','--max-time','240','-o',str(local/(name+suffix)),base+name+suffix],check=True,timeout=260)
+ subprocess.run(['curl','-fL','--retry','3','--retry-all-errors','--retry-delay','2','--max-time','240','-o',str(local/(name+suffix)),base+name+suffix],check=True,timeout=260)
 expected=(local/(name+'.sha256.txt')).read_text().split()[0]
 actual=hashlib.sha256((local/name).read_bytes()).hexdigest()
 if actual!=expected:raise SystemExit('JDK checksum mismatch; no extraction performed')
