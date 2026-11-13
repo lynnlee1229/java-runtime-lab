@@ -1,0 +1,27 @@
+name: Real JVM experiments and audited reading site
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25.0.5+8'
+          cache: maven
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: python3 scripts/lab.py doctor
+      - run: python3 scripts/lab.py build
+      - run: python3 scripts/lab.py test --repeats 3
+      - run: node --test scripts/test_site.mjs
+      - run: python3 scripts/build_site.py
+      - run: python3 scripts/check_site.py

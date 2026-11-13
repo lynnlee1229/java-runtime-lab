@@ -1,0 +1,12 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import {readFileSync} from 'node:fs';
+import {validate,stateFromSearch,stepPath,series} from '../site/core.mjs';
+const data=JSON.parse(readFileSync(new URL('../records/run-1.json',import.meta.url)));
+test('saved actual measurement validates',()=>assert.equal(validate(data),data));
+test('empty record rejects',()=>assert.throws(()=>validate({})));
+test('failed assertions reject',()=>assert.throws(()=>validate({...data,assertionsPassed:false})));
+test('unclosed counters reject',()=>{const d=structuredClone(data);d.pools[0].completed++;assert.throws(()=>validate(d))});
+test('missing events reject',()=>{const d=structuredClone(data);d.cancellation[0].events=[];assert.throws(()=>validate(d))});
+test('backwards event clocks reject',()=>{const d=structuredClone(data);d.pools[0].events[1].ms=-1;assert.throws(()=>validate(d))});
+test('deep links select saved run/path',()=>assert.deepEqual(stateFromSearch('?run=3&view=timeout&policy=cooperative&task=0'),{run:'3',view:'timeout',policy:'cooperative',task:'0'}));
+test('invalid route falls back to a real record',()=>assert.equal(stateFromSearch('?run=999').run,'1'));
+test('step curves derive only finite actual values',()=>{const s=series(data.pools[0].events,'queue');assert.ok(s.length>0);assert.ok(!stepPath(s,200,3).includes('NaN'));assert.equal(stepPath([],0,0),'')});
