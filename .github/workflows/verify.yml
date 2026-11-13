@@ -22,6 +22,8 @@ jobs:
       - run: python3 scripts/lab.py doctor
       - run: python3 scripts/lab.py build
       - run: python3 scripts/lab.py test --repeats 3
+      - run: python3 scripts/learn.py capacity --requests 7 --capacity 2
+      - run: python3 scripts/curriculum.py --check
       - run: node --test scripts/test_site.mjs
       - run: python3 scripts/build_site.py
       - run: python3 scripts/check_site.py

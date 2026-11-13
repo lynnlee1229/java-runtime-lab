@@ -1,5 +1,6 @@
 import {test} from 'node:test';import assert from 'node:assert/strict';import {readFileSync} from 'node:fs';
 import {validate,stateFromSearch,stepPath,series} from '../site/core.mjs';
+import {validateBulkhead,bulkheadState} from '../site/bulkhead-core.mjs';
 const data=JSON.parse(readFileSync(new URL('../records/run-1.json',import.meta.url)));
 test('saved actual measurement validates',()=>assert.equal(validate(data),data));
 test('empty record rejects',()=>assert.throws(()=>validate({})));
@@ -10,3 +11,14 @@ test('backwards event clocks reject',()=>{const d=structuredClone(data);d.pools[
 test('deep links select saved run/path',()=>assert.deepEqual(stateFromSearch('?run=3&view=timeout&policy=cooperative&task=0'),{run:'3',view:'timeout',policy:'cooperative',task:'0'}));
 test('invalid route falls back to a real record',()=>assert.equal(stateFromSearch('?run=999').run,'1'));
 test('step curves derive only finite actual values',()=>{const s=series(data.pools[0].events,'queue');assert.ok(s.length>0);assert.ok(!stepPath(s,200,3).includes('NaN'));assert.equal(stepPath([],0,0),'')});
+const bulkhead=JSON.parse(readFileSync(new URL('../records/bulkhead-1.json',import.meta.url)));
+test('actual bulkhead records pass the display contract',()=>{for(let i=1;i<=3;i++)assert.ok(validateBulkhead(JSON.parse(readFileSync(new URL(`../records/bulkhead-${i}.json`,import.meta.url)))))});
+test('missing bulkhead evidence rejects',()=>assert.throws(()=>validateBulkhead({})));
+test('bulkhead source must be real virtual thread execution',()=>{const d=structuredClone(bulkhead);d.cases[0].events.find(e=>e.state==='started').virtualThread=false;assert.throws(()=>validateBulkhead(d))});
+test('bulkhead trace contradictions reject even when summary closes',()=>{const d=structuredClone(bulkhead);d.cases[1].events.find(e=>e.state==='entered').active=10;assert.throws(()=>validateBulkhead(d))});
+test('cancelled future does not establish work exit',()=>{const d=structuredClone(bulkhead);d.cases[4].cancelSnapshot.targetWorkExited=true;assert.throws(()=>validateBulkhead(d))});
+test('missing real JFR transitions reject',()=>{const d=structuredClone(bulkhead);d.jfr.transitionCounts['queue/entered']--;assert.throws(()=>validateBulkhead(d))});
+test('virtual thread starts cannot be silently absent',()=>{const d=structuredClone(bulkhead);d.jfr.eventCounts['jdk.VirtualThreadStart']=0;assert.throws(()=>validateBulkhead(d))});
+test('bulkhead deep link preserves run policy and task',()=>assert.deepEqual(bulkheadState('?run=3&policy=cancel-ignore&task=0'),{run:'3',policy:'cancel-ignore',task:'0'}));
+test('invalid bulkhead route selects an actual case',()=>assert.equal(bulkheadState('?run=999&policy=made-up').policy,'unbounded'));
+test('registry has six executable bilingual original units and resolvable sources',()=>{const c=JSON.parse(readFileSync(new URL('../docs/curriculum.json',import.meta.url)));const sources=new Set(c.resources.map(x=>x.id));assert.equal(c.units.length,6);for(const u of c.units){assert.ok(u.command.startsWith('python3 scripts/learn.py '+u.id));assert.ok(u.resourceIds.every(id=>sources.has(id)));assert.ok(u.predict.en&&u.predict.zh&&u.observe.en&&u.observe.zh)}});

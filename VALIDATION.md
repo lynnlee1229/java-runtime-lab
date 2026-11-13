@@ -1,3 +1,28 @@
+# Java Runtime Lab 1.1 · current validation
+
+Date: 2026-11-14, Asia/Shanghai. The earlier 1.0 release evidence is retained below as history. This iteration keeps its source and reference captures, and adds a real virtual-thread/downstream-resource exercise.
+
+## What the new capability actually establishes
+
+- With N=12 real virtual tasks and C=3 declared downstream slots, all three committed captures observed unbounded peak occupancy 12, queue-policy occupancy 3 with 9 registered waiters, and reject-policy 3 completions with 9 rejections. The latch protocol forces that first wave before releasing work. This demonstrates resource admission, not a throughput advantage.
+- Each cancellation path starts three holders plus one queued task. The queued cancellation never entered downstream. Cooperative cancellation reduced occupied slots to 2 before the snapshot. The interrupt-ignoring holder had a cancelled Future but still occupied its slot (3 active); actual work exit later returned it. All terminal counts close and all 3 permits return.
+- An independent Python state-machine oracle reconstructed task sets and resource counters; it checked every snapshot and terminal outcome against formulas from N/C. The implementation's assertionsPassed flag alone is insufficient. Invalid configurations fail. Deliberately corrupted records test rejection of permit leaks, forged virtual thread observations, false work-exit claims, resource trace contradictions, missing JFR transitions and forged terminal closure.
+- All three real JFRs were read again by separate JVMs. Every recording has 44 actual virtual starts, 44 ends and 239 custom transitions; each scenario/transition count matches JSON. Pinned-event observations are 3, 2, 0. Counts are retained rather than forced to zero. No cause, synchronized pinning or universal absence is inferred from those numbers. Raw JFR remains ignored/local.
+- Executed the documented doctor → build → test --repeats 3. Both the full original suite and new suite passed. Also executed all six learn.py entry points and the exact documented capacity --requests 7 --capacity 2 command, producing peak 7/2/2, five waiters and five rejections as predicted. A second JVM reread each new JFR. Evidence and source hashes are in records/bulkhead-validation.json.
+
+## Learning and delivery checks
+
+- Audited four gaps before choosing the virtual-thread resource boundary. docs/AUDIT-2026-11-14.md records the decision and preserved baseline.
+- The structured registry selects MIT 6.172, Performance Engineering of Software Systems, Fall 2018 (C), with exact course identity, prerequisites, access/enrollment distinction and four lecture links. Java SE 25/JEP sources and one specifically identified Vanderbilt 2020 interrupt lecture supplement Java behavior; the latter is not assigned an invented semester or presented as a new 2026 offering. Six original exercises map sources → prediction → actual command → evidence → limitation.
+- All 14 source URLs were anonymously fetched, with capture dates, byte counts and SHA-256 receipts in records/resource-checks.json; response bodies were discarded. JEP 444/491 were read from the official source. The installed JDK and official Temurin release were checked, and the existing 25.0.5+8 LTS pin was retained. No preview or paid/model API is used.
+- Original browser checks remain. New display-contract checks reject empty/missing records, forged thread observations, impossible resource snapshots, false cancellation conclusions and mismatched actual JFR. Curriculum references and six bilingual executable units validate offline.
+- Real browser preview: queue/reject selection; ignored-interrupt holder; task 0 filtering; run 3 selection; EN→ZH state preservation; Chinese curriculum search; complete-case JSON download parsed and matched to actual run 1 (all 28 events despite 9 visible task events). Both new pages at viewport 390 have document/body width 390. No browser console errors were observed. Injecting an empty record hid all results with an evidence-unavailable error; restoration recovered the actual viewer.
+- The exporter audits legacy and new records and exports only authored assets, registry/anonymous receipts and verified synthetic JSON. Complete manifest, local links and privacy checks pass. Source visibility remains PUBLIC for this companion and PRIVATE for the homepage source.
+
+Deployment evidence for 1.1 is recorded in release.json after source/output push, CI/Pages completion and anonymous live hash verification. Publication is not claimed from a source push alone.
+
+---
+
 # Java Runtime Lab 1.0 · validation
 
 Date: 2026-11-13, Asia/Shanghai. Workloads are synthetic. The site displays saved actual JVM recordings, not current machine state.

@@ -3,6 +3,8 @@ import hashlib,json,pathlib,re,sys
 from html.parser import HTMLParser
 from urllib.parse import urljoin,urlparse,unquote
 from verify import verify
+from verify_bulkhead import verify as verify_bulkhead
+from curriculum import validate as validate_curriculum
 ROOT=pathlib.Path(__file__).resolve().parent.parent;OUT=ROOT/'dist';BASE='https://lynnlee1229.github.io/'
 class Page(HTMLParser):
  def __init__(self):super().__init__();self.links=[];self.h1=0;self.lang='';self.alt=set()
@@ -32,6 +34,11 @@ for f in (OUT/'java-runtime-lab').rglob('*'):
    if target.is_dir():target=target/'index.html'
    assert target.exists(),f'Broken link: {f.name} -> {link}'
 for i in range(1,4):verify(json.loads((OUT/f'java-runtime-lab/assets/run-{i}.json').read_text()))
+for i in range(1,4):verify_bulkhead(json.loads((OUT/f'java-runtime-lab/assets/bulkhead-{i}.json').read_text()))
+registry=validate_curriculum(json.loads((OUT/'java-runtime-lab/assets/curriculum.json').read_text()))
+receipts=json.loads((OUT/'java-runtime-lab/assets/resource-checks.json').read_text())
+assert {r['id'] for r in receipts['resources']}=={r['id'] for r in registry['resources']}
+assert all(r['publicRead'] and r['bytes']>500 for r in receipts['resources'])
 m=json.loads((OUT/'java-runtime-lab/manifest.json').read_text())['files']
 for name,sha in m.items():assert hashlib.sha256((OUT/'java-runtime-lab'/name).read_bytes()).hexdigest()==sha
 assert set(m)=={str(f.relative_to(OUT/'java-runtime-lab')) for f in (OUT/'java-runtime-lab').rglob('*') if f.is_file() and f.name!='manifest.json'}

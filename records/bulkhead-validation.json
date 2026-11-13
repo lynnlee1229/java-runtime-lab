@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-11-13T18:18:08.694406+00:00",
+  "runtime": "Temurin 25.0.5+8 LTS",
+  "workload": "original offline gated synthetic downstream",
+  "sourceFiles": {
+    "src/main/java/lab/BulkheadLab.java": "7288f53f245eff2ffabf2504c97c7e45632b4eb0bce2fe0fcaa07a4ce63dcd1f",
+    "scripts/verify_bulkhead.py": "d1159bcb75b18b73cd5037cf31cb2efd7829d86093166dd3a044cff6e57bb860",
+    "scripts/learn.py": "875f3fe0160b3b781b8432589f762a6f87444d3af576c292e5ed3e4d3d9a6305"
+  },
+  "repetitions": [
+    {
+      "record": "bulkhead-1.json",
+      "sha256": "8ac18a173051c03f573d3151fb93f77d8aa92737a3182ec99be8e35ecafea121",
+      "recordedAt": "2026-11-13T18:01:50.157568Z",
+      "jfrCounts": {
+        "jdk.ThreadPark": 185,
+        "jdk.ThreadSleep": 27,
+        "jdk.VirtualThreadEnd": 44,
+        "jdk.VirtualThreadPinned": 3,
+        "jdk.VirtualThreadStart": 44,
+        "jdk.VirtualThreadSubmitFailed": 0,
+        "lab.BulkheadEvent": 239
+      }
+    },
+    {
+      "record": "bulkhead-2.json",
+      "sha256": "8460e938f3a3e80d3687aad903333f36bcc68deb3d1fee675630acbd94ed1d30",
+      "recordedAt": "2026-11-13T18:01:50.854285Z",
+      "jfrCounts": {
+        "jdk.ThreadPark": 190,
+        "jdk.ThreadSleep": 27,
+        "jdk.VirtualThreadEnd": 44,
+        "jdk.VirtualThreadPinned": 2,
+        "jdk.VirtualThreadStart": 44,
+        "jdk.VirtualThreadSubmitFailed": 0,
+        "lab.BulkheadEvent": 239
+      }
+    },
+    {
+      "record": "bulkhead-3.json",
+      "sha256": "eff1a584595a07aa9b7834d1f12f64fdd33214f0c46d30215a61b686aba530a2",
+      "recordedAt": "2026-11-13T18:01:51.544044Z",
+      "jfrCounts": {
+        "jdk.ThreadPark": 160,
+        "jdk.ThreadSleep": 27,
+        "jdk.VirtualThreadEnd": 44,
+        "jdk.VirtualThreadPinned": 0,
+        "jdk.VirtualThreadStart": 44,
+        "jdk.VirtualThreadSubmitFailed": 0,
+        "lab.BulkheadEvent": 239
+      }
+    }
+  ],
+  "independentJsonStateMachine": true,
+  "separateJvmJfrReadMatches": true,
+  "legacyRegressionPassed": true,
+  "invalidInputsRejected": true,
+  "corruptionControlsRejected": [
+    "permit leak",
+    "forged virtual-thread flag",
+    "false cancelled-work exit",
+    "resource trace contradiction",
+    "missing JFR transition",
+    "absent virtual start",
+    "forged terminal closure"
+  ],
+  "learningEntryChecks": {
+    "checkedAt": "2026-11-13T18:03:26.214785+00:00",
+    "runs": [
+      {
+        "unit": "measure",
+        "exitCode": 0,
+        "outputSha256": "6744bc7a40287b89cd512168269212b8225fcf6d970b9657f278b6e3bfd35ea5"
+      },
+      {
+        "unit": "pool",
+        "exitCode": 0,
+        "outputSha256": "c5281b064ac8040681f36fcb7ee6433cfd5198f14dc59714078cdb51d815fe81"
+      },
+      {
+        "unit": "capacity",
+        "exitCode": 0,
+        "outputSha256": "25f207c5e6610726a8c128f7f6ca27514f9e5ac55c621b4313ebea2dbb7c3620"
+      },
+      {
+        "unit": "cancel",
+        "exitCode": 0,
+        "outputSha256": "de9593ca704efeb77fa510a9fa288e032c594369b326182bdff68df98cdc98b7"
+      },
+      {
+        "unit": "retry",
+        "exitCode": 0,
+        "outputSha256": "876bbb84182668ddc7215de544a104097eec3199f1d205e82d12db4c6f40bcd4"
+      },
+      {
+        "unit": "evidence",
+        "exitCode": 0,
+        "outputSha256": "dd96e0146c5839c3298f2f4640d395a6a91503719381acb2540500a2a90056bb"
+      }
+    ]
+  },
+  "additionalWorkload": {
+    "requests": 7,
+    "capacity": 2,
+    "stateMachinePassed": true
+  },
+  "preview": {
+    "queuePeak9": true,
+    "reject9": true,
+    "cancelIgnoreStillOwnsPermit": true,
+    "run3LanguageStatePreserved": true,
+    "completeCaseDownloadParsed": true,
+    "downloadedEvents": 28,
+    "taskFilteredEvents": 9,
+    "chineseCurriculumSearch": true,
+    "mobile": {
+      "viewport": 390,
+      "documentScrollWidth": 390,
+      "bodyScrollWidth": 390,
+      "pages": [
+        "curriculum",
+        "bulkhead"
+      ]
+    },
+    "emptyRecordHidesResults": true
+  },
+  "privacy": "counts and synthetic numeric task transitions only; no raw JFR or machine identifiers exported"
+}

@@ -48,3 +48,23 @@ JVM 实际启动 jdk.jfr.Recording，启用自定义 lab.TaskEvent、零阈值 T
 - [固定 Temurin 25.0.5+8 发布](https://github.com/adoptium/temurin25-binaries/releases/tag/jdk-25.0.5%2B8)
 - [Apache Maven Wrapper](https://maven.apache.org/tools/wrapper/)
 - [OpenJDK JMH](https://github.com/openjdk/jmh)
+
+## 虚拟线程 bulkhead 协议与独立 oracle
+
+BulkheadLab 沿用 Temurin 25.0.5+8 LTS，仅用 JDK 类，不开 preview。每次突发的 N 个任务实际运行在虚拟线程上，逐个记录 Thread.currentThread().isVirtual()。不使用 Semaphore 时 N 个任务全部进入门闩控制的合成下游；使用 C 个许可时最多 C 个进入。控制器等所有任务进入、登记等待或被拒绝后才记录 held_snapshot，再释放门闩。获准任务真实 sleep 10 毫秒。本协议验证资源占用而非吞吐。无限制对照超过声明的容量，但不虚构服务器报错。
+
+queued 表示 tryAcquire 失败后登记等待的任务数，包含 acquire 尚未真正 park，以及获得许可但尚未记录 dequeue 的短暂区间；它不是 Semaphore.getQueueLength。阻塞 acquire 使用公平 Semaphore，但无超时的 tryAcquire 不遵循公平设置，因此不验证任务顺序或无饥饿保证。队列有限来自本次有限突发，不是 Semaphore 独立限制等待长度。
+
+取消路径先启动 C 个持有者，再提交一个等待者。控制器在门闩关闭时观察到 35 毫秒 Future.get 超时，先取消等待任务并等待其真实 finally，再取消持有者 0。协作工作退出；故意忽略中断的对照记录中断后再次等待门闩。cancel_snapshot 分别报告 Future.isCancelled 和实际退出的 latch。释放门闩后剩余工作结束。cancelled 统计观察到中断的生命周期，不保证工作在取消信号当时就结束。等待中取消不得进入下游。只有实际 acquire 成功才允许 release，且在下游实际退出后归还。
+
+每个 latch 等待最多 3 秒，executor 正常关闭预算 2 秒，再给自身中断清理 1 秒。watchdog 或 Future 执行失败会使整轮失败；外层 runner 在 25 秒后只终止并回收自己的 JVM。不启动常驻服务。
+
+独立 Python oracle 从 N/C 推导预期，按事件重建在途与等待任务集合，检查每个任务恰有一个终态、所有资源快照，并与真实 JFR 的场景/转换计数比对，而非只信 assertionsPassed。另一个 JVM 再读取同一 JFR，摘要必须相同。损坏许可、线程类型、资源快照、终态计数、取消状态和 JFR 的反例只用于验证检查器，不冒充真实测量。
+
+保存的三轮 N=12、C=3 首波峰值均为 12/3/3；等待峰值 0/9/0；拒绝数 0/0/9。每个真实 JFR 都有 44 个虚拟线程开始、44 个结束以及 239 个自定义转换。Pinned 事件分别为 3、2、0。仅凭计数不能定位成因或归因 synchronized。原始 JFR 留在本地，公开摘要不包含调用栈、线程身份、主机或路径。
+
+## JDK 年代与实验之外的问题
+
+[JEP 444](https://openjdk.org/jeps/444) 在 JDK 21 正式交付虚拟线程，建议直接限制稀缺资源而不是池化虚拟线程；其中 synchronized pinning 的描述对应那个版本。[JEP 491](https://openjdk.org/jeps/491) 在 JDK 24 交付，让虚拟线程在 synchronized 构造中阻塞时释放 carrier。[Java SE 25 指南](https://docs.oracle.com/en/java/javase/25/core/virtual-threads.html) 说明 native/foreign 调用相关的剩余 pinning 与虚拟线程 JFR 事件。本实验不声称所有 synchronized 都 pin，也不声称 pinning 不可能。某轮记录为 0 仅说明该轮配置与负载中未采到。
+
+[StructuredTaskScope 在 JDK 25 仍为 preview 阅读延伸](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/concurrent/StructuredTaskScope.html)，未启用实验或 --enable-preview。本负载不含网络、数据库、真实 LLM，不比较吞吐、供应商限流、队列内存或模型质量。AI 服务类比仅帮助理解在途资源的所有权。

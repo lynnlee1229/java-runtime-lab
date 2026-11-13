@@ -61,3 +61,30 @@ python3 scripts/lab.py stop
 ## 阅读与分享
 
 阅读站加载三轮真实保存 JSON。可切换轮次、场景、策略，筛选任务事件，导出整轮或当前案例，复制带状态的深链。切换语言保留当前案例。导出在浏览器完成；网页不会启动 Java，也不会观察正在运行的机器。
+
+## 6. 虚拟线程：先预测下游边界
+
+[六个可执行学习单元](https://lynnlee1229.github.io/java-runtime-lab/zh/curriculum/) 将准确的 MIT lecture 与官方 Java 阅读材料对应到原创小练习，列出先修、访问条件与核验日期。MIT 6.172 是 2018 年秋季的 C 语言课程，Java 25 行为以官方文档补足。公开阅读不等于注册学生、付费选课或取得证书。这里不转载大学作业解答。
+
+完成 doctor 与 build 后执行：
+
+```sh
+python3 scripts/learn.py capacity --requests 7 --capacity 2
+python3 scripts/learn.py cancel
+python3 scripts/learn.py evidence
+python3 scripts/curriculum.py 取消
+```
+
+运行前预测 N=7、C=2 的首波：无 bulkhead 的下游峰值为 7；等待策略峰值 2、登记等待 5；满即拒绝策略完成 2、拒绝 5。检查真实的逐任务转换和许可归还。门闩强制工作重叠，不靠恰好的 sleep/提交时间制造结论。等待数量有界来自本次有限突发，Semaphore 本身没有独立的队列长度上限。
+
+取消练习先让持有者的 Future.get 超时，再取消等待者，最后取消持有者 0。检查 cancel_snapshot：协作目标已经实际退出，忽略中断的目标则 Future 已取消但仍占用槽位。只有稍后实际退出才归还许可。两条路径最终都必须归还全部 C 个许可；不连接真实下游或模型。
+
+```sh
+python3 scripts/lab.py bulkhead --requests 12 --capacity 3
+python3 scripts/verify_bulkhead.py local/bulkhead-1.json
+python3 scripts/learn.py capacity --record records/bulkhead-1.json
+```
+
+标准 test 入口现在在新 JVM 中执行旧实验与 bulkhead 实验，再由另一个 JVM 读取每个真实 JFR，独立检查 JSON、损坏记录与非法参数。requests 取 capacity+1..40，capacity 取 1..6。每个 suite 的外层硬超时为 25 秒，内部等待也有 watchdog。原始 JFR 仍在忽略的 local/ 中。可使用固定 JDK 的 bin/jfr print，选择 --events jdk.VirtualThreadStart,jdk.VirtualThreadEnd,jdk.VirtualThreadPinned,jdk.VirtualThreadSubmitFailed，读取 local/bulkhead-1.jfr。
+
+[虚拟线程保存记录](https://lynnlee1229.github.io/java-runtime-lab/zh/bulkhead/) 支持轮次/策略/任务筛选、分享深链与完整案例下载。任务筛选仅影响显示，案例导出仍保留该案例的所有事件。浏览器不会启动 JVM；学习页也提供结构化课程清单和官方资料的匿名访问核验记录。

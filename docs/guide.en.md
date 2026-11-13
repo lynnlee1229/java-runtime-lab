@@ -61,3 +61,30 @@ Normal runs finish in the foreground, close their pools and leave no running ser
 ## Read and share the evidence
 
 The reading station loads three real saved JSON records. Switch repeat, scenario and policy; filter task events; export the run or selected case; copy a deep link. The same selected case survives switching languages. Files stay in your browser during export. The website neither starts Java nor observes a running machine.
+
+## 6. Virtual threads: predict the downstream boundary
+
+Open the [six-unit learning path](https://lynnlee1229.github.io/java-runtime-lab/en/curriculum/) for exact MIT lecture links, official Java readings, prerequisites and access conditions. MIT 6.172 is a Fall 2018 C course; Java 25 behavior is supplied by the official readings. Reading archived material is separate from registration, fees or certificates. Each exercise is original, not a solution to a university assignment.
+
+After doctor and build:
+
+```sh
+python3 scripts/learn.py capacity --requests 7 --capacity 2
+python3 scripts/learn.py cancel
+python3 scripts/learn.py evidence
+python3 scripts/curriculum.py cancellation
+```
+
+Before running, predict the N=7, C=2 first wave: unbounded peak 7; wait-policy peak 2 and 5 registered waiters; reject-policy 2 completions and 5 rejections. Inspect actual per-task transitions and returned permits. The gate forces work to overlap, so the experiment does not depend on guessing a convenient sleep/arrival race. Waiting is finite because the burst is finite, not because this semaphore imposes a queue-size bound.
+
+The cancellation exercise times out a holder's Future.get, cancels the queued task, then cancels holder 0. Check cancel_snapshot: the cooperative target has actually exited, while the ignoring target has a cancelled Future and still occupies a slot. Only its later work exit releases the permit. Both controls must eventually restore all C permits. There is no network downstream or model call.
+
+```sh
+python3 scripts/lab.py bulkhead --requests 12 --capacity 3
+python3 scripts/verify_bulkhead.py local/bulkhead-1.json
+python3 scripts/learn.py capacity --record records/bulkhead-1.json
+```
+
+The standard test entry now runs legacy and bulkhead suites in fresh JVMs, rereads each real JFR in another JVM, and rejects corrupt evidence/invalid configuration. requests must be capacity+1..40; capacity 1..6. Each suite has a 25-second outer hard timeout and internal bounded watchdogs. Raw JFR stays under ignored local/. To inspect local virtual events, use the pinned JDK's bin/jfr print with --events jdk.VirtualThreadStart,jdk.VirtualThreadEnd,jdk.VirtualThreadPinned,jdk.VirtualThreadSubmitFailed and local/bulkhead-1.jfr.
+
+Use [saved bulkhead evidence](https://lynnlee1229.github.io/java-runtime-lab/en/bulkhead/) to switch run/policy/task, copy a deep link and download the complete case. A task filter affects display only; case exports retain all case events. No browser action runs a JVM. The course registry and official-source access receipts are downloadable from the learning page.

@@ -48,3 +48,23 @@ The JSON publishes only file byte count, total events read, observed event span 
 - [Pinned Temurin 25.0.5+8 release](https://github.com/adoptium/temurin25-binaries/releases/tag/jdk-25.0.5%2B8)
 - [Apache Maven Wrapper](https://maven.apache.org/tools/wrapper/)
 - [OpenJDK JMH](https://github.com/openjdk/jmh)
+
+## Virtual-thread bulkhead protocol and independent oracle
+
+BulkheadLab uses the same pinned Temurin 25.0.5+8 LTS, no preview and only JDK classes. In each burst all N tasks execute on real virtual threads, verified by Thread.currentThread().isVirtual(). Without a semaphore, all N enter a gated synthetic downstream. With C permits, at most C enter. The controller waits until every task has entered, registered to wait or been rejected before taking held_snapshot. Only then does it release the gate. Each admitted task performs a real 10 ms sleep. This protocol tests resource occupancy rather than throughput. Excess entries in the unbounded control violate a declared capacity; they are not synthetic claims of server errors.
+
+queue counts tasks registered as waiting after a failed tryAcquire, including the interval before acquire parks and after acquire returns until dequeue is recorded. It is not Semaphore.getQueueLength. The semaphore is fair for blocking acquire, but untimed tryAcquire does not honor fairness; task order and starvation freedom are not tested. The finite offered burst limits this exercise's queue, not the semaphore itself.
+
+Cancellation starts C holders before submitting one queued task. The controller observes a 35 ms Future.get timeout while the gate is closed, then cancels the queued task and waits for its actual finally block. It cancels holder 0 next. Cooperative work exits; the deliberate ignoring control observes the interruption and waits for the gate again. cancel_snapshot distinguishes Future.isCancelled from an exited-work latch. Releasing the gate finishes remaining work. cancelled counts interrupted lifecycles, not a guarantee that all work stopped at the cancel signal. The queued task must never enter downstream. Permit release is guarded by actual acquisition and occurs after downstream exit, including exceptional paths.
+
+All waits have a 3-second watchdog; executors get 2 seconds to shut down plus 1-second owned cleanup. A failed watchdog or Future execution fails the run; the outer runner kills/reaps only its owned JVM after 25 seconds. No permanent services are started.
+
+The Python oracle independently derives expected closure from N and C, reconstructs active/waiting task sets from events, checks exactly one terminal event per task and every snapshot, then compares scenario/transition counts to the actual JFR. It does not trust assertionsPassed alone. A separate JVM reads the same JFR again and must produce identical allowlisted summaries. Negative verifier tests corrupt permits, thread type, resource snapshots, terminal counts, cancellation state and JFR observations; these are clearly invalid inputs, never measurements.
+
+For the three committed N=12, C=3 captures, the first-wave maxima are 12/3/3; queue peak is 0/9/0 and rejections 0/0/9. Each JFR has 44 real virtual starts and 44 ends, and 239 actual custom transitions. Pinned events are 3, 2 and 0 respectively. Counts alone cannot identify their cause or attribute them to synchronized. Raw JFR remains local; the published summaries include no stacks, thread identities, hosts or paths.
+
+## JDK history and what remains outside the experiment
+
+[JEP 444](https://openjdk.org/jeps/444) delivered virtual threads in JDK 21 and recommends limiting scarce resources directly instead of pooling virtual threads. Its synchronized pinning description reflects that JDK's behavior. [JEP 491](https://openjdk.org/jeps/491), delivered in JDK 24, allows virtual threads blocking in synchronized constructs to release their carriers. The [Java SE 25 guide](https://docs.oracle.com/en/java/javase/25/core/virtual-threads.html) describes remaining native/foreign-call pinning and virtual-thread JFR events. This Lab does not claim all synchronized code pins, nor that pinning is impossible. Zero recorded pinned events in one repetition only means none were recorded in that run under the enabled configuration.
+
+StructuredTaskScope is [preview reading in JDK 25](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/concurrent/StructuredTaskScope.html), not an enabled experiment. No --enable-preview is used. This workload has no network, database, real LLM, throughput comparison, provider rate-limit claim, queue memory study or model-quality evaluation. An AI-service analogy concerns in-flight resource ownership only.
