@@ -1,49 +1,88 @@
 {
   "lab": "java-runtime-lab",
+  "edition": "1.1",
   "status": "published-and-verified",
-  "completedAt": "2026-11-13T12:18:25.586918+00:00",
+  "completedAt": "2026-11-13T19:07:19.600047+00:00",
   "runtime": "Temurin 25.0.5+8 LTS",
   "repeats": 3,
   "publicRawJfr": false,
-  "tests": {
-    "jvmLifecycle": true,
-    "independentJsonAndJfr": true,
-    "siteUnitTests": 9,
-    "staticPrivacyLinksManifest": true,
-    "browserDownloadsParsed": true,
-    "mobile": {
-      "viewport": 390,
-      "scrollWidth": 390
+  "learning": {
+    "selectedCourse": "MIT 6.172 Performance Engineering of Software Systems, Fall 2018 (C)",
+    "originalRunnableUnits": 6,
+    "officialResourcesAnonymousRead": 14,
+    "verifiedOn": "2026-11-14",
+    "registry": "docs/curriculum.json",
+    "enrollmentSeparateFromPublicReading": true
+  },
+  "findings": {
+    "requests": 12,
+    "downstreamSlots": 3,
+    "peakInFlight": {
+      "unbounded": 12,
+      "queue": 3,
+      "reject": 3
     },
-    "emptyRecordRejectAndRecovery": true
+    "queuePeak": 9,
+    "rejectCount": 9,
+    "cancelSnapshotActive": {
+      "cooperative": 2,
+      "ignoreInterrupt": 3
+    },
+    "allPermitsRestored": true,
+    "jfrVirtualStartsPerRun": 44,
+    "jfrVirtualEndsPerRun": 44,
+    "customTransitionsPerRun": 239,
+    "pinnedObserved": [
+      3,
+      2,
+      0
+    ],
+    "jfrThresholdMs": 0,
+    "pinningCauseInferred": false,
+    "benchmarkOrModelEvaluation": false
+  },
+  "tests": {
+    "legacyAndBulkheadRegression": true,
+    "independentStateMachine": true,
+    "separateJvmJfrReadMatches": true,
+    "negativeControlsAndInvalidInputs": true,
+    "sixDocumentedExercisesExecuted": true,
+    "capacity7Requests2SlotsExecuted": true,
+    "browserDisplayContractCases": 19,
+    "staticPrivacyLinksManifest": true
   },
   "companion": {
     "url": "https://github.com/lynnlee1229/java-runtime-lab",
     "visibility": "PUBLIC",
-    "commit": "5c9c446a13da3dce654cb34a41b1cb85790e981e",
+    "contentCommit": "a57149fc570b390cb74363cda41271509ad897f7",
+    "implementationCommit": "5b3cea8a0920773d43ab19535a069058c2d7fdd9",
     "ci": {
-      "url": "https://github.com/lynnlee1229/java-runtime-lab/actions/runs/43423482264",
+      "url": "https://github.com/lynnlee1229/java-runtime-lab/actions/runs/43482506312",
       "conclusion": "success"
     }
   },
   "homepageSource": {
     "visibility": "PRIVATE",
-    "commit": "f124c7a608d788e94767529bc5f2c8d857807a6a"
+    "commit": "02c1864b5de5be1e317fad52ad4e81ddaf7980c9",
+    "onlyChangedPrefix": "static/java-runtime-lab/",
+    "otherSourceFileHashesPreserved": 573,
+    "foreignUncommittedChangesPreserved": true
   },
-  "pagesOutputCommit": "d5ea7880395ba98809415fb4e00320a815aaecc8",
+  "pagesOutputCommit": "0aad525b398f7dd4ae7f6fa887f572d30e109177",
   "pages": {
     "status": "built",
-    "commit": "d5ea7880395ba98809415fb4e00320a815aaecc8",
-    "updatedAt": "2026-11-13T12:15:10Z"
+    "commit": "0aad525b398f7dd4ae7f6fa887f572d30e109177",
+    "updatedAt": "2026-11-13T19:02:18Z"
   },
   "homepageCI": {
     "conclusion": "success",
-    "url": "https://github.com/lynnlee1229/myWebsiteSource/actions/runs/43423531595"
+    "url": "https://github.com/lynnlee1229/myWebsiteSource/actions/runs/43488093248"
   },
   "urls": {
     "en": "https://lynnlee1229.github.io/java-runtime-lab/en/",
     "zh": "https://lynnlee1229.github.io/java-runtime-lab/zh/",
-    "homepage": "https://lynnlee1229.github.io/websites/#learning-labs"
+    "bulkhead": "https://lynnlee1229.github.io/java-runtime-lab/zh/bulkhead/",
+    "curriculum": "https://lynnlee1229.github.io/java-runtime-lab/zh/curriculum/"
   },
   "live": {
     "status": "passed",
@@ -59,9 +98,49 @@
         "bytes": 11638
       },
       {
+        "path": "/java-runtime-lab/assets/bulkhead-1.json",
+        "sha256": "8ac18a173051c03f573d3151fb93f77d8aa92737a3182ec99be8e35ecafea121",
+        "bytes": 26691
+      },
+      {
+        "path": "/java-runtime-lab/assets/bulkhead-2.json",
+        "sha256": "8460e938f3a3e80d3687aad903333f36bcc68deb3d1fee675630acbd94ed1d30",
+        "bytes": 26687
+      },
+      {
+        "path": "/java-runtime-lab/assets/bulkhead-3.json",
+        "sha256": "eff1a584595a07aa9b7834d1f12f64fdd33214f0c46d30215a61b686aba530a2",
+        "bytes": 26710
+      },
+      {
+        "path": "/java-runtime-lab/assets/bulkhead-core.mjs",
+        "sha256": "c7ea4a497ce8178bd9232839c20c31c5b7cfb83de2089b48669542e138bbdfc4",
+        "bytes": 4152
+      },
+      {
+        "path": "/java-runtime-lab/assets/bulkhead.mjs",
+        "sha256": "d5efcbc282f9d8b558f600dcafee22c30a2c6a121dedf7633120bd214784f1c4",
+        "bytes": 7078
+      },
+      {
         "path": "/java-runtime-lab/assets/core.mjs",
         "sha256": "ec58054838ac333679be582174c03364cc692b6230dd3045919c047a565da5a5",
         "bytes": 1910
+      },
+      {
+        "path": "/java-runtime-lab/assets/curriculum.json",
+        "sha256": "5537d052fe3a187bdff929cdae1e1c8b2f2735a0eb4196f7b92abe9fff5dae82",
+        "bytes": 15935
+      },
+      {
+        "path": "/java-runtime-lab/assets/curriculum.mjs",
+        "sha256": "1bf77f69eceda15179c1a136018446b46a4d45f5d12a6d3af1b42ded28ce7ae2",
+        "bytes": 947
+      },
+      {
+        "path": "/java-runtime-lab/assets/resource-checks.json",
+        "sha256": "e17326d5cc033a79df36f1cf28fdca57b1add0dd1e062c8201b4d152df039a5e",
+        "bytes": 4066
       },
       {
         "path": "/java-runtime-lab/assets/run-1.json",
@@ -80,23 +159,33 @@
       },
       {
         "path": "/java-runtime-lab/assets/style.css",
-        "sha256": "06d092c71706d8a2a995403a4ebdc3042006417bc8dc4cb061f261ceb6484b67",
-        "bytes": 5325
+        "sha256": "35a62e0b48e4b64070caa64150b0d1955cee9800f4984481f03c223aff16ea6d",
+        "bytes": 5853
+      },
+      {
+        "path": "/java-runtime-lab/en/bulkhead/index.html",
+        "sha256": "ae1be90dbc57badf87c08574d1a12b5be4e9d36dd3ee2c9d94dd04a54841f18f",
+        "bytes": 5088
+      },
+      {
+        "path": "/java-runtime-lab/en/curriculum/index.html",
+        "sha256": "7b8d1bfd420ff0cb4b32aefb1d06d3c5225a1f6935422d9d71d93796d77dbf98",
+        "bytes": 33522
       },
       {
         "path": "/java-runtime-lab/en/guide/index.html",
-        "sha256": "671ac6209367279685ee077e9fe0f38d67340c19631513b0dd49ce8316bbeda4",
-        "bytes": 7620
+        "sha256": "a598e00088903d5852c1740ba8d479e37af858693def43fab4cf7593354b4dd3",
+        "bytes": 10432
       },
       {
         "path": "/java-runtime-lab/en/index.html",
-        "sha256": "529df451f20f2447425dfcdd62d9123380a6625605610081a82ceef5f4d7a505",
-        "bytes": 4421
+        "sha256": "8ded568b0e66ba3cf4d2304eff3e1c66d059a3c471dc56015615d4bb8d96e633",
+        "bytes": 4517
       },
       {
         "path": "/java-runtime-lab/en/methods/index.html",
-        "sha256": "310b15c7a9670f4517887b40d1380d84f5a7ffb99b13152dbc6b50bbb81cf469",
-        "bytes": 9030
+        "sha256": "7cd941105d20ed6a99c37cd4f88662445a1a64ea6156c5f888bdcc4ff73de516",
+        "bytes": 13972
       },
       {
         "path": "/java-runtime-lab/index.html",
@@ -105,34 +194,69 @@
       },
       {
         "path": "/java-runtime-lab/sitemap.xml",
-        "sha256": "1245d8cfd23d3116e5166431c9cfe431195c952a5f9b46eade500f69df0f6b9e",
-        "bytes": 567
+        "sha256": "c1c098cf88c39f56c0434100bfd1375127c9413f10d2d72d1c6d949a0b41d48b",
+        "bytes": 895
+      },
+      {
+        "path": "/java-runtime-lab/zh/bulkhead/index.html",
+        "sha256": "f29b8259f4f5855b05e700a40707cf4d5c8b91cadec1eb0a4b87428d2619db35",
+        "bytes": 4905
+      },
+      {
+        "path": "/java-runtime-lab/zh/curriculum/index.html",
+        "sha256": "22bdedbb5c2f4d333ff060d12991019a473ed382b34d64fde105b3aafa2edbc3",
+        "bytes": 32922
       },
       {
         "path": "/java-runtime-lab/zh/guide/index.html",
-        "sha256": "230e83c09f3b0b56c9606a2feab21d2f942f7b2da0ecc94655c83c8d8271eeec",
-        "bytes": 7062
+        "sha256": "72d5ae20552c0129a5518e56ce456b6aa76faf9c01b34e2da3741f7189038292",
+        "bytes": 9697
       },
       {
         "path": "/java-runtime-lab/zh/index.html",
-        "sha256": "c8e4da4a2d8d2004960012008984f15c3903e98a89beb1ea0f175e2a6401e7ac",
-        "bytes": 4393
+        "sha256": "6072a7cf140e19298df18b32d24c114f4aaa9b3024573f928b35c0e2f3d28a51",
+        "bytes": 4476
       },
       {
         "path": "/java-runtime-lab/zh/methods/index.html",
-        "sha256": "5e0b3ce00241217d855f473c79421bcf931d6dcdba2d9fede8825b0034470277",
-        "bytes": 7984
+        "sha256": "5562b5dcc65e1c1f4e192e449cc8f5fd88d4dddfbc98502e752b675529c4ea0b",
+        "bytes": 12269
       }
     ]
   },
   "browserLive": {
     "homepageCardOpened": true,
-    "englishAndChinese": true,
-    "timeoutAndRetryOperations": true,
-    "downloadMatchesRecord": true,
+    "legacyCallerRunsCompleted18": true,
+    "queuePeak9": true,
+    "reject9": true,
+    "cooperativeAndIgnoringHolderControls": true,
+    "run3LanguageStatePreserved": true,
+    "shareLinkCopied": true,
+    "completeRunDownloadParsedAndMatched": true,
+    "sixLearningCommandsVisible": true,
+    "chineseCurriculumSearch": true,
     "mobile": {
-      "width": 390,
-      "scrollWidth": 390
-    }
+      "viewport": 390,
+      "documentScrollWidth": 390,
+      "bodyScrollWidth": 390,
+      "pages": [
+        "bulkhead",
+        "curriculum"
+      ]
+    },
+    "consoleErrors": 0
+  },
+  "outputOtherTrackedFilesByteUnchanged": 526,
+  "cleanup": {
+    "ownedPreviewStopped": true,
+    "temporaryOfficialSourceBodiesRemoved": true,
+    "verifiedBrowserDownloadsRemoved": true,
+    "isolatedPrivateBuildRemoved": true,
+    "duplicateRunFilesAndNewBytecodeRemoved": true,
+    "preserved": "source, pinned dependencies, sanitized evidence, three raw JFRs locally, validated export"
+  },
+  "previousRelease": {
+    "completedAt": "2026-11-13T12:18:25.586918+00:00",
+    "pagesOutputCommit": "d5ea7880395ba98809415fb4e00320a815aaecc8"
   }
 }
