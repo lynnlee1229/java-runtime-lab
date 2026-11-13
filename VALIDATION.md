@@ -27,7 +27,9 @@ Date: 2026-11-13, Asia/Shanghai. Workloads are synthetic. The site displays save
 
 ## Deployment evidence
 
-The owner workspace ops/java-runtime-lab-release.json records source/output commits, CI/Pages results, final public checks and evidence hashes after deployment. A source push alone is not treated as successful publication.
+GitHub Pages built output d5ea7880395ba98809415fb4e00320a815aaecc8 successfully at 2026-11-13T12:15:10Z. Homepage source f124c7a608d788e94767529bc5f2c8d857807a6a passed CI. Anonymous HTTP checks matched all 14 exported file hashes and the complete manifest, both language discovery cards and robots sitemap. Existing Agent, GeoData, Streaming and Search/Recommendation/Ads entries remained reachable. Public browser checks covered timeout/retry controls, the EN/ZH transition, a real JSON download matching the audited record, mobile scrollWidth 390 at viewport 390, and navigation from the homepage directory card.
+
+See release.json for public evidence. The owner workspace ops/java-runtime-lab-release.json also retains raw local JFR and screenshot hashes. Raw JFR remains local. A source push alone is not treated as successful publication.
 
 ## Reproduce
 

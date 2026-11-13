@@ -1,0 +1,138 @@
+{
+  "lab": "java-runtime-lab",
+  "status": "published-and-verified",
+  "completedAt": "2026-11-13T12:18:25.586918+00:00",
+  "runtime": "Temurin 25.0.5+8 LTS",
+  "repeats": 3,
+  "publicRawJfr": false,
+  "tests": {
+    "jvmLifecycle": true,
+    "independentJsonAndJfr": true,
+    "siteUnitTests": 9,
+    "staticPrivacyLinksManifest": true,
+    "browserDownloadsParsed": true,
+    "mobile": {
+      "viewport": 390,
+      "scrollWidth": 390
+    },
+    "emptyRecordRejectAndRecovery": true
+  },
+  "companion": {
+    "url": "https://github.com/lynnlee1229/java-runtime-lab",
+    "visibility": "PUBLIC",
+    "commit": "5c9c446a13da3dce654cb34a41b1cb85790e981e",
+    "ci": {
+      "url": "https://github.com/lynnlee1229/java-runtime-lab/actions/runs/43423482264",
+      "conclusion": "success"
+    }
+  },
+  "homepageSource": {
+    "visibility": "PRIVATE",
+    "commit": "f124c7a608d788e94767529bc5f2c8d857807a6a"
+  },
+  "pagesOutputCommit": "d5ea7880395ba98809415fb4e00320a815aaecc8",
+  "pages": {
+    "status": "built",
+    "commit": "d5ea7880395ba98809415fb4e00320a815aaecc8",
+    "updatedAt": "2026-11-13T12:15:10Z"
+  },
+  "homepageCI": {
+    "conclusion": "success",
+    "url": "https://github.com/lynnlee1229/myWebsiteSource/actions/runs/43423531595"
+  },
+  "urls": {
+    "en": "https://lynnlee1229.github.io/java-runtime-lab/en/",
+    "zh": "https://lynnlee1229.github.io/java-runtime-lab/zh/",
+    "homepage": "https://lynnlee1229.github.io/websites/#learning-labs"
+  },
+  "live": {
+    "status": "passed",
+    "anonymousHTTP": true,
+    "manifestMatched": true,
+    "homepageCardsBothLanguages": true,
+    "robotsSitemap": true,
+    "preservedLabsReachable": true,
+    "files": [
+      {
+        "path": "/java-runtime-lab/assets/app.mjs",
+        "sha256": "5976c09e95733764d9d71e3c6c6bd575eeb7b9c844c160074df7057a667fd113",
+        "bytes": 11638
+      },
+      {
+        "path": "/java-runtime-lab/assets/core.mjs",
+        "sha256": "ec58054838ac333679be582174c03364cc692b6230dd3045919c047a565da5a5",
+        "bytes": 1910
+      },
+      {
+        "path": "/java-runtime-lab/assets/run-1.json",
+        "sha256": "0c3428418ed62aa75c7c50b14244b3878f618dbb110745bb71775e09b7e7f719",
+        "bytes": 28593
+      },
+      {
+        "path": "/java-runtime-lab/assets/run-2.json",
+        "sha256": "7e708e22c686733d1c116bf15ba042d0bc1974f7ea91bb6e137bc014a9c65bc7",
+        "bytes": 28597
+      },
+      {
+        "path": "/java-runtime-lab/assets/run-3.json",
+        "sha256": "3374f5649d1a53bb7282e2de16c1149877cd66be66b45147cc68f1f015d4fc1e",
+        "bytes": 28596
+      },
+      {
+        "path": "/java-runtime-lab/assets/style.css",
+        "sha256": "06d092c71706d8a2a995403a4ebdc3042006417bc8dc4cb061f261ceb6484b67",
+        "bytes": 5325
+      },
+      {
+        "path": "/java-runtime-lab/en/guide/index.html",
+        "sha256": "671ac6209367279685ee077e9fe0f38d67340c19631513b0dd49ce8316bbeda4",
+        "bytes": 7620
+      },
+      {
+        "path": "/java-runtime-lab/en/index.html",
+        "sha256": "529df451f20f2447425dfcdd62d9123380a6625605610081a82ceef5f4d7a505",
+        "bytes": 4421
+      },
+      {
+        "path": "/java-runtime-lab/en/methods/index.html",
+        "sha256": "310b15c7a9670f4517887b40d1380d84f5a7ffb99b13152dbc6b50bbb81cf469",
+        "bytes": 9030
+      },
+      {
+        "path": "/java-runtime-lab/index.html",
+        "sha256": "9333572730a990492094eef1ef244143b64dea184bf58528bee70e42788aef5a",
+        "bytes": 292
+      },
+      {
+        "path": "/java-runtime-lab/sitemap.xml",
+        "sha256": "1245d8cfd23d3116e5166431c9cfe431195c952a5f9b46eade500f69df0f6b9e",
+        "bytes": 567
+      },
+      {
+        "path": "/java-runtime-lab/zh/guide/index.html",
+        "sha256": "230e83c09f3b0b56c9606a2feab21d2f942f7b2da0ecc94655c83c8d8271eeec",
+        "bytes": 7062
+      },
+      {
+        "path": "/java-runtime-lab/zh/index.html",
+        "sha256": "c8e4da4a2d8d2004960012008984f15c3903e98a89beb1ea0f175e2a6401e7ac",
+        "bytes": 4393
+      },
+      {
+        "path": "/java-runtime-lab/zh/methods/index.html",
+        "sha256": "5e0b3ce00241217d855f473c79421bcf931d6dcdba2d9fede8825b0034470277",
+        "bytes": 7984
+      }
+    ]
+  },
+  "browserLive": {
+    "homepageCardOpened": true,
+    "englishAndChinese": true,
+    "timeoutAndRetryOperations": true,
+    "downloadMatchesRecord": true,
+    "mobile": {
+      "width": 390,
+      "scrollWidth": 390
+    }
+  }
+}
