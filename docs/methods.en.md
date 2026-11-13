@@ -61,6 +61,8 @@ All waits have a 3-second watchdog; executors get 2 seconds to shut down plus 1-
 
 The Python oracle independently derives expected closure from N and C, reconstructs active/waiting task sets from events, checks exactly one terminal event per task and every snapshot, then compares scenario/transition counts to the actual JFR. It does not trust assertionsPassed alone. A separate JVM reads the same JFR again and must produce identical allowlisted summaries. Negative verifier tests corrupt permits, thread type, resource snapshots, terminal counts, cancellation state and JFR observations; these are clearly invalid inputs, never measurements.
 
+All seven listed JFR event types are explicitly enabled, with threshold zero and stack traces disabled. For pinned events this differs from the usual 20 ms default: the counts do not imply long pinning pauses. We verify actual starts/ends and custom transitions; absent pinned or submit-failed events are reported as zero, not as observed incidents.
+
 For the three committed N=12, C=3 captures, the first-wave maxima are 12/3/3; queue peak is 0/9/0 and rejections 0/0/9. Each JFR has 44 real virtual starts and 44 ends, and 239 actual custom transitions. Pinned events are 3, 2 and 0 respectively. Counts alone cannot identify their cause or attribute them to synchronized. Raw JFR remains local; the published summaries include no stacks, thread identities, hosts or paths.
 
 ## JDK history and what remains outside the experiment
